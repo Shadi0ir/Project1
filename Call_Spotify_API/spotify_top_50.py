@@ -12,7 +12,7 @@ def top_50_stats(top_50_playlist):
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
     #Call api for data from top 50 US tracks
-    playlists = sp.user_playlist_tracks('spotify', top_50_playlist, market = 'US')
+    playlists = sp.user_playlist_tracks('spotify', playlist_id = top_50_playlist, market = 'US', limit=50)
 
     #Loop through each song to get name and URI, saved to empty list. Ignore the first 14 characters in each URI
     top_song_names = []
