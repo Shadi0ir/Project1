@@ -40,7 +40,7 @@ def make_frequency(feature, country_1, country_2):
 
     ax1.set_ylim(0, frequency_combined.max()*1.2)
     ax1.set_title(f'{feature} Comparison of Top 50 songs \nbetween {country_1} and {country_2}', pad = 10, size = 'x-large')
-    fig.savefig(f'figures/{feature} Comparison of Top 50 songs between {country_1} and {country_2}.jpg', bbox_inches='tight')
+    fig.savefig(f'figures/{feature} Comparison of Top 50 songs between {country_1} and {country_2}.jpg', bbox_inches='tight', dpi = 250)
 
 # make scatter function for easy use in other files
 import pandas as pd
