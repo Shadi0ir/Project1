@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.lines as mlines
 # Make frequency plot function for use in other 
 def make_frequency(feature, country_1, country_2):
-    
     #Read CSV at feature into a series. Sort values low to high
     series_1 = pd.read_csv(f'Top_50_CSVs/{country_1}_top_50_songs.csv')[feature]
     series_2 = pd.read_csv(f'Top_50_CSVs/{country_2}_top_50_songs.csv')[feature]
@@ -25,21 +24,31 @@ def make_frequency(feature, country_1, country_2):
     frequency_combined = pd.concat([series_1_frequency, series_2_frequency])
     
     # Plot
-    red_square = mlines.Line2D([], [], color='red', marker='s', linestyle='None', markersize=10, label= country_1)
-    blu_square = mlines.Line2D([], [], color='blue', marker='s', linestyle='None', markersize=10, label= country_2)
+    if series_1.mean() > series_2.mean():
+        color1 = 'blue'
+        color2 = 'red'
+    else:
+        color1 = 'red'
+        color2 = 'blue'
+    square1 = mlines.Line2D([], [], color=color1, marker='s', linestyle='None', markersize=10, label= country_1)
+    square2 = mlines.Line2D([], [], color=color2, marker='s', linestyle='None', markersize=10, label= country_2)
     # Freqeuency plot options
     fig, ax1 = plt.subplots()
-    ax1.plot(bins[:-1], series_1_frequency, label = country_1, color = 'blue', alpha = 0)
-    ax1.plot(bins[:-1], series_2_frequency, label = country_2, color = 'red', alpha = 0)
-    ax1.fill_between(bins[:-1], series_1_frequency, color = 'blue', alpha = 0.6)
-    ax1.fill_between(bins[:-1], series_2_frequency, color = 'red', alpha = 0.6)
-    ax1.legend(loc='lower left', handles = [red_square, blu_square], bbox_to_anchor= (1.0, 0.5), 
+    ax1.plot(bins[:-1], series_1_frequency, label = country_1, alpha = 0)
+    ax1.plot(bins[:-1], series_2_frequency, label = country_2, alpha = 0)
+    
+    
+    ax1.fill_between(bins[:-1], series_1_frequency, color = color1, alpha = 0.6)
+    ax1.fill_between(bins[:-1], series_2_frequency, color = color2, alpha = 0.6)
+    
+    ax1.legend(loc='lower left', handles = [square1, square2], bbox_to_anchor= (1.0, 0.5), 
                 borderaxespad=0, frameon=False, fontsize = 'large')
     ax1.set_xlabel(feature, size = 'large')
     ax1.set_ylabel('Frequency', rotation = 'horizontal', size = 'large', labelpad = 30)
 
     ax1.set_ylim(0, frequency_combined.max()*1.2)
     ax1.set_title(f'{feature} Comparison of Top 50 songs \nbetween {country_1} and {country_2}', pad = 10, size = 'x-large')
+
     fig.savefig(f'figures/{feature} Comparison of Top 50 songs between {country_1} and {country_2}.jpg', bbox_inches='tight', dpi = 250)
 
 # make scatter function for easy use in other files
